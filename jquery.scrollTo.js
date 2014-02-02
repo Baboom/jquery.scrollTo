@@ -152,9 +152,25 @@
 			animate( settings.onAfter );
 
 			function animate( callback ) {
-				$elem.animate( attr, duration, settings.easing, callback && function() {
-					callback.call(this, targ, settings);
-				});
+				var proceed;
+
+				// Only animate if really necessary.. jQuery waits for the total duration
+				// even if the element final state is already the desired one
+				if (attr.scrollTop != null && $elem.scrollTop() != attr.scrollTop) {
+					proceed = true;
+				} else if (attr.scrollLeft != null && $elem.scrollLeft() != attr.scrollLeft) {
+					proceed = true;
+				} else {
+					proceed = false;
+				}
+
+				if (!proceed) {
+					callback();
+				} else {
+					$elem.animate( attr, duration, settings.easing, callback && function() {
+						callback.call(this, targ, settings);
+					});
+				}
 			};
 
 		}).end();
