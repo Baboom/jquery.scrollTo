@@ -165,7 +165,7 @@
 				}
 
 				if (!proceed) {
-					callback && callback();
+					callback && callback.call(this, targ, settings);
 				} else {
 					$elem.animate( attr, duration, settings.easing, callback && function() {
 						callback.call(this, targ, settings);
